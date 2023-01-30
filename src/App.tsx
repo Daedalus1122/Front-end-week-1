@@ -92,7 +92,7 @@ function AlbumPicker() {
                 <form onSubmit={handleSubmitAlbum}>
                     <label>
                         Album name:
-                        <input name="Album"/>
+                        <input name="album"/>
                     </label>
                     <button type="submit">Search</button>
                     <p>Albums:</p>
