@@ -37,9 +37,9 @@ function AlbumPicker() {
     async function handleSubmit(e: FormEvent) {
         e.preventDefault();
         const target = e.target as typeof e.target & {
-            artist: { value: string };
+            album: { value: string };
         };
-        const artist = encodeURIComponent(target.artist.value);
+        const artist = encodeURIComponent(target.album.value);
         const url = `https://musicbrainz.org/ws/2/release?fmt=json&query=artist:${artist}`;
         const response = await fetch(url);
         const mbResult = (await response.json()) as {
@@ -63,6 +63,7 @@ function AlbumPicker() {
             Album name:
                 <input name= "album" />
             </label>
+            <button type="submit">Search</button>
             <p>Albums:</p>
             <ol>
                 {albums.map((album) => (
