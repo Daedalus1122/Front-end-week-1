@@ -62,6 +62,7 @@ function AlbumPicker() {
             <label>
             Album name:
                 <input name= "album" />
+
             </label>
             <button type="submit">Search</button>
             <p>Albums:</p>
