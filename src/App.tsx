@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import {FormEvent, useState} from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css'
 
@@ -21,7 +21,7 @@ function App() {
           count is {count}
         </button>
         <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
+            <AlbumPicker></AlbumPicker>
         </p>
       </div>
       <p className="read-the-docs">
@@ -29,6 +29,39 @@ function App() {
       </p>
     </div>
   )
+}
+
+function AlbumPicker() {
+    const [albums, setAlbums] = useState<string[]>([]);
+    async function handleSubmit(e: FormEvent) {
+        e.preventDefault();
+        const target = e.target as typeof e.target & {
+            artist: { value: string };
+        };
+        const artist = encodeURIComponent(target.artist.value);
+        const url = `https://musicbrainz.org/ws/2/release?fmt=json&query=artist:${artist}`;
+        const response = await fetch(url);
+        const mbResult = (await response.json()) as {
+            releases: { title: string }[];
+        };
+        const { releases } = mbResult;
+        setAlbums(releases.map(({ title }) => title));
+    }
+    return (
+        <form onSubmit={handleSubmit}>
+            <label>
+                Artist name:
+                <input name="artist" />
+            </label>
+            <button type="submit">Search</button>
+            <p>Albums:</p>
+            <ol>
+                {albums.map((album) => (
+                    <li>{album}</li>
+                ))}
+            </ol>
+        </form>
+    );
 }
 
 export default App
