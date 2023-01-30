@@ -46,7 +46,10 @@ function AlbumPicker() {
         };
         const { releases } = mbResult;
         setAlbums(releases.map(({ title }) => title));
+
+
     }
+
     return (
         <form onSubmit={handleSubmit}>
             <label>
