@@ -39,8 +39,8 @@ function AlbumPicker() {
         const target = e.target as typeof e.target & {
             album: { value: string };
         };
-        const artist = encodeURIComponent(target.album.value);
-        const url = `https://musicbrainz.org/ws/2/release?fmt=json&query=artist:${artist}`;
+        const album = encodeURIComponent(target.album.value);
+        const url = `https://musicbrainz.org/ws/2/release?fmt=json&query=album:${album}`;
         const response = await fetch(url);
         const mbResult = (await response.json()) as {
             releases: { title: string, date: string } [];
