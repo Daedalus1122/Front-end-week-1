@@ -43,11 +43,11 @@ function AlbumPicker() {
         const url = `https://musicbrainz.org/ws/2/release?fmt=json&query=artist:${artist}`;
         const response = await fetch(url);
         const mbResult = (await response.json()) as {
-            releases: { title: string, dates: string } [];
+            releases: { title: string, date: string } [];
         };
         const { releases } = mbResult;
         setAlbums(releases.map(({ title }) => title));
-        setDates(releases.map(({dates})=> dates));
+        setDates(releases.map(({date})=> date));
 
 
     }
