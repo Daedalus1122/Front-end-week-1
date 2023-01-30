@@ -34,45 +34,83 @@ function App() {
 function AlbumPicker() {
     const [albums, setAlbums] = useState<string[]>([]);
     const [dates, setDates] = useState<string[]>([]);
-    async function handleSubmit(e: FormEvent) {
+
+    async function handleSubmitArtist(e: FormEvent) {
         e.preventDefault();
         const target = e.target as typeof e.target & {
-            album: { value: string };
+            artist: { value: string };
+
         };
-        const album = encodeURIComponent(target.album.value);
-        const url = `https://musicbrainz.org/ws/2/release?fmt=json&query=album:${album}`;
+        const artist = encodeURIComponent(target.artist.value)
+        const url = `https://musicbrainz.org/ws/2/release?fmt=json&query=artist:${artist}`;
         const response = await fetch(url);
         const mbResult = (await response.json()) as {
             releases: { title: string, date: string } [];
         };
-        const { releases } = mbResult;
-        setAlbums(releases.map(({ title }) => title));
-        setDates(releases.map(({date})=> date));
+        const {releases} = mbResult;
+        setAlbums(releases.map(({title}) => title));
+        setDates(releases.map(({date}) => date));
 
 
     }
 
-    return (
-        <form onSubmit={handleSubmit}>
-            <label>
-                Artist name:
-                <input name="artist" />
-            </label>
-            <button type="submit">Search</button>
-            <label>
-            Album name:
-                <input name= "album" />
 
-            </label>
-            <button type="submit">Search</button>
-            <p>Albums:</p>
-            <ol>
-                {albums.map((album) => (
-                    <li>{album+" "+dates.at(albums.indexOf(album))}</li>
-                ))}
-            </ol>
-        </form>
-    );
+    async function handleSubmitAlbum(e: FormEvent) {
+        e.preventDefault();
+        const target = e.target as typeof e.target & {
+            album: { value: string };
+
+        };
+        const album = encodeURIComponent(target.album.value);
+        const url = `https://musicbrainz.org/ws/2/release?fmt=json&query=release:${album}`;
+        const response = await fetch(url);
+        const mbResult = (await response.json()) as {
+            releases: { title: string, date: string } [];
+        };
+        const {releases} = mbResult;
+        setAlbums(releases.map(({title}) => title));
+        setDates(releases.map(({date}) => date));
+    }
+        return (
+            <div>
+                <form onSubmit={handleSubmitArtist}>
+                    <label>
+                        Artist name:
+                        <input name="artist"/>
+                    </label>
+                    <button type="submit">Search</button>
+                    <p>Albums:</p>
+                    <ol>
+                        {albums.map((album) => (
+                            <li>{album + " " + dates.at(albums.indexOf(album))}</li>
+                        ))}
+                    </ol>
+                </form>
+
+
+
+                <form onSubmit={handleSubmitAlbum}>
+                    <label>
+                        Artist name:
+                        <input name="Album"/>
+                    </label>
+                    <button type="submit">Search</button>
+                    <label>
+                        Album name:
+                        <input name="album"/>
+
+                    </label>
+                    <button type="submit">Search</button>
+                    <p>Albums:</p>
+                    <ol>
+                        {albums.map((album) => (
+                            <li>{album + " " + dates.at(albums.indexOf(album))}</li>
+                        ))}
+                    </ol>
+                </form>
+            </div>
+        );
+
+
 }
-
 export default App
