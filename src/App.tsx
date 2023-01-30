@@ -33,6 +33,7 @@ function App() {
 
 function AlbumPicker() {
     const [albums, setAlbums] = useState<string[]>([]);
+    const [dates, setDates] = useState<string[]>([]);
     async function handleSubmit(e: FormEvent) {
         e.preventDefault();
         const target = e.target as typeof e.target & {
@@ -42,10 +43,11 @@ function AlbumPicker() {
         const url = `https://musicbrainz.org/ws/2/release?fmt=json&query=artist:${artist}`;
         const response = await fetch(url);
         const mbResult = (await response.json()) as {
-            releases: { title: string }[];
+            releases: { title: string, dates: string } [];
         };
         const { releases } = mbResult;
         setAlbums(releases.map(({ title }) => title));
+        setDates(releases.map(({dates})=> dates));
 
 
     }
@@ -60,7 +62,7 @@ function AlbumPicker() {
             <p>Albums:</p>
             <ol>
                 {albums.map((album) => (
-                    <li>{album}</li>
+                    <li>{album+" "+dates.at(albums.indexOf(album))}</li>
                 ))}
             </ol>
         </form>
